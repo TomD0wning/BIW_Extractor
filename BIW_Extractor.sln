@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIW_Extractor", "BIW_Extractor\BIW_Extractor.csproj", "{795F3B35-E738-4901-AD0A-F888DF8A64DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIW_ExtractTests", "BIW_ExtractTests\BIW_ExtractTests.csproj", "{476FBF3C-99D8-4A60-A9BE-157E85C3513F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{795F3B35-E738-4901-AD0A-F888DF8A64DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795F3B35-E738-4901-AD0A-F888DF8A64DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795F3B35-E738-4901-AD0A-F888DF8A64DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795F3B35-E738-4901-AD0A-F888DF8A64DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{476FBF3C-99D8-4A60-A9BE-157E85C3513F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{476FBF3C-99D8-4A60-A9BE-157E85C3513F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{476FBF3C-99D8-4A60-A9BE-157E85C3513F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{476FBF3C-99D8-4A60-A9BE-157E85C3513F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
