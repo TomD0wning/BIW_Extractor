@@ -3,14 +3,22 @@
   "Pwd": "X0YF2430XON01",
   "ApiUrl": "https://uk-api.myconject.com/api/",
   "TenentQuery": "https://uk-api.myconject.com/api/tenant",
-  "ProjectQuery": "https://uk-api.myconject.com/api/101/Project",
+  "ProjectQuery": "https://uk-api.myconject.com/api/101/Project/?$top=100000",
   "ProjectSpecificUrl": "/{channelId}/{projectId}",
   "DocumentStatus": "/{channelId}/{projectId}/DocumentRegisters",
   "DocumentOverview": "/{channelId}/{projectId}/{documentRegisterId}/Documents",
   "DocumentComments": "/{channelId}/{projectId}/{documentRegisterId}/DocumentComments",
   "DocumentDownload": "",
-  "ProjectListPath": "../BIWProjectRequestResponse.json",
-  "ProjectListCsv": "../ProjectList.csv",
-  "DocumentListCsv":  "../DocumentMetadataList.csv",
-  "JsChannelId": "101"
+  "ProjectDriveLocation": "/Users/tomp.downing/Documents/BIWMigration",
+  "ProjectListPath": "/BIWProjectRequestResponse.json",
+  "ProjectListCsv": "/ProjectList.csv",
+  "DocumentListCsv":  "/DocumentMetadataList.csv",
+  "JsChannelId": "101",
+  "ProjectHeader": "ID,Name,Code,Display Name,Active",
+  "MetaDataHeader": "IdDocument,IdDocumentSubmissions,IdDocumentRegister,IdProject,ProjectName,ReceivedDate,Description,IdCompany,IssuedDate,DocumentStatus,Working,IssueNumber,RevisionLetter,PurposeOfIssue,DownloadLink,FileName,FileSize,FileType,SuccessfulDL,Location",
+  "GetRequest": "GET",
+  "PostRequest": "POST",
+  "ContentType": "application/json",
+  "DriveReference": "/Volumes/X"
+
 }

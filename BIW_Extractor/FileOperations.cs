@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using Mono.Unix;
+
 
 namespace BIW_Extractor
 {
@@ -20,42 +22,80 @@ namespace BIW_Extractor
 
         }
 
-
-        public static void WriteResponse(string file, HttpWebResponse response)
+        /// <summary>
+        /// Create the folder if it does not exist
+        /// </summary>
+        /// <param name="path">path name</param>
+        public static void CreateFolder(string path)
         {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        /// <summary>
+        /// Create the folder if it does not exist
+        /// </summary>
+        /// <param name="path">path name</param>
+        public static void Createfolder<T>(string path, List<T> listOfFolders)
+        {
+            foreach (var item in listOfFolders)
+            {
+                if (!Directory.Exists(path + "/" + item))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+        }
+
+        public static void CreateFolderStructure(string path, List<DocumentRegister> documentRegisters)
+        {
+
+            foreach (var item in documentRegisters)
+            {
+                if (!Directory.Exists(path + "/" + item.Name))
+                {
+                    Directory.CreateDirectory(path + "/" + item.Id);
+                    SetFullFolderPermissionsUnix(path + "/" + item.Id);
+                }
+            }
+        }
+
+        public static void SetFullFolderPermissionsUnix(string path)
+        {
+            var nixFolderInfo = new UnixDirectoryInfo(path)
+            {
+                FileAccessPermissions = FileAccessPermissions.AllPermissions
+            };
 
         }
 
-        public static void WriteProjectCsv(string outputFile, List<Project> proj){
-
-            var csv = new StringBuilder();
-
-            string header = "ID,Name,Code,Display Name,Active";
-
-            csv.AppendLine(header);
-
-            foreach (Project item in proj)
-            {
-                csv.AppendLine(item.ToString());
-            }
-
-
-            File.WriteAllText(outputFile, csv.ToString());
+        public static void CreateProjectFolder(string filePath)
+        {
+            System.IO.FileInfo file = new System.IO.FileInfo(filePath);
+            file.Directory.Create();
         }
 
-        public static void WriteDocumentCsv(string outputFile, List<Document> docs)
+        /*
+         * <Write a generic csv>
+         * 
+         * <Params: >
+         */
+
+        public static void WriteCsv<T>(string outputFile, List<T> metaDataList, string header, string altMetaData)
         {
             var csv = new StringBuilder();
 
-            string header = "IdDocument,IdDocumentSubmissions,IdDocumentRegister,IdProject,ProjectName,ReceivedDate,Description,IdCompany,IssuedDate,DocumentStatus,Working,IssueNumber,RevisionLetter,PurposeOfIssue,DownloadLink,FileName,FileSize,FileType,SuccessfulDL,Location";
-            csv.AppendLine(header);
+            if (!File.Exists(outputFile))
+                csv.AppendLine(header);
 
-            foreach(Document d in docs)
+            foreach (var item in metaDataList)
             {
-                csv.AppendLine(d.ToString());
+                csv.AppendLine($"{item.ToString()},{altMetaData}");
             }
 
-            File.WriteAllText(outputFile, csv.ToString());
+            File.AppendAllText(outputFile, csv.ToString());
         }
 
         //"Items": [
@@ -78,7 +118,7 @@ namespace BIW_Extractor
 
             JObject x = JObject.Parse(fileContents);
 
-            JArray Projects = (JArray)x["Items"]; 
+            JArray Projects = (JArray)x["Items"];
 
             List<Project> projectList = new List<Project>();
 

@@ -42,7 +42,7 @@ namespace BIW_Extractor
         public string DocumentStatus;
         public bool Working;
         public int IssueNumber;
-        public char RevisionLetter;
+        public string RevisionLetter;
         public string PurposeOfIssue;
         public DocumentFiles Documents;
 
@@ -72,13 +72,6 @@ namespace BIW_Extractor
     {
         public int Id;
         public string Name;
-
-
-        public DocumentRegister()
-        {
-            Dictionary<int, string> documentRegister = new Dictionary<int, string>();
-        }
-
 
         public override string ToString()
         {
