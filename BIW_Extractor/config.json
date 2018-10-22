@@ -9,16 +9,15 @@
   "DocumentOverview": "/{channelId}/{projectId}/{documentRegisterId}/Documents",
   "DocumentComments": "/{channelId}/{projectId}/{documentRegisterId}/DocumentComments",
   "DocumentDownload": "",
-  "ProjectDriveLocation": "/Users/tomp.downing/Documents/BIWMigration",
-  "ProjectListPath": "/BIWProjectRequestResponse.json",
-  "ProjectListCsv": "/ProjectList.csv",
-  "DocumentListCsv":  "/DocumentMetadataList.csv",
+  "ProjectDriveLocation": "/Users/tomp.downing/Documents/BIWMigration/",
+  "ProjectListCsv": "/Users/tomp.downing/Documents/BIWMigration/ProjectList.csv",
+  "DocumentListCsv": "/Users/tomp.downing/Documents/BIWMigration/DocumentMetadataList.csv",
   "JsChannelId": "101",
   "ProjectHeader": "ID,Name,Code,Display Name,Active",
-  "MetaDataHeader": "IdDocument,IdDocumentSubmissions,IdDocumentRegister,IdProject,ProjectName,ReceivedDate,Description,IdCompany,IssuedDate,DocumentStatus,Working,IssueNumber,RevisionLetter,PurposeOfIssue,DownloadLink,FileName,FileSize,FileType,SuccessfulDL,Location",
+  "MetaDataHeader": "IdDocument,IdDocumentSubmissions,IdDocumentRegister,IdProject,ProjectName,ReceivedDate,Description,IdCompany,IssuedDate,DocumentStatus,Working,IssueNumber,RevisionLetter,PurposeOfIssue,DownloadLink,FileName,FileSize,FileType,DocumentRegisterName",
   "GetRequest": "GET",
   "PostRequest": "POST",
   "ContentType": "application/json",
-  "DriveReference": "/Volumes/X"
-
+  "DriveReference": "X",
+  "LogFileLocation": "../ExtractLog.txt"
 }

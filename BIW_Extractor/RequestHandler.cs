@@ -11,8 +11,8 @@ namespace BIW_Extractor
 {
     public static class RequestHandler
     {
-
-        public static string HttpRequest(string url, NetworkCredential auth , string requestMethod){
+    
+        public static string HttpRequest(string url, NetworkCredential auth , string requestMethod, string logFile){
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.CreateHttp(url);
             request.Method = requestMethod;
@@ -30,15 +30,16 @@ namespace BIW_Extractor
             } 
             catch(WebException e)
             {
-                Console.WriteLine($"Request: {url} failed \n{e.Message}");
+                Logging.LogOperation("Request", url, "failed" + e.Message, logFile);
+                Console.WriteLine($"Request: {url} failed {e.Message}");
             }
 
+            Logging.LogOperation("Request", url, "successful", logFile);
             Console.WriteLine($"Request: {url} successful");
             return response;
         }
 
-
-        public static void DownloadDocuments(string path, List<Document> fileList, NetworkCredential auth)
+        public static void DownloadDocuments(string path, List<Document> fileList, NetworkCredential auth, string logFile)
         {
                 using (WebClient client = new WebClient())
                 {
@@ -46,16 +47,13 @@ namespace BIW_Extractor
                     
                     foreach (var item in fileList)
                     {
-                    client.DownloadFile(item.Documents.DownloadLink , path + item.Documents.FileName + "." + item.Documents.FileType);
+                        if (!File.Exists(path + item.Documents.FileName + "." + item.Documents.FileType))
+                        {
+                            client.DownloadFile(item.Documents.DownloadLink, path + item.Documents.FileName + "." + item.Documents.FileType);
+                            Logging.LogOperation("DocumentDownload", item.Documents.DownloadLink, "successful", logFile);
+                        }
                     }
                 }
-        }
-
-        //TODO - write the builder
-        public static string UrlBuilder(string url)
-        {
-
-            return "";
         }
 
         public static NetworkCredential CreateCredentials(string user, string pass)

@@ -16,10 +16,19 @@ namespace BIW_Extractor
     {
 
 
-        public static void ReadConfig()
+        public static Dictionary<string, string> ReadConfig()
         {
+            Dictionary<string, string> configList = new Dictionary<string, string>();
 
+            using(StreamReader sr = new StreamReader("config.json")){
+                JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(sr));
 
+                foreach (var item in o)
+                {
+                    configList.Add(item.Key, item.Value.ToString());
+                }
+            }
+            return configList;
         }
 
         /// <summary>
@@ -68,13 +77,15 @@ namespace BIW_Extractor
             {
                 FileAccessPermissions = FileAccessPermissions.AllPermissions
             };
-
         }
 
         public static void CreateProjectFolder(string filePath)
         {
-            System.IO.FileInfo file = new System.IO.FileInfo(filePath);
-            file.Directory.Create();
+            if (!Directory.Exists(filePath))
+            {
+                System.IO.FileInfo file = new System.IO.FileInfo(filePath);
+                file.Directory.Create();
+            }
         }
 
         /*
