@@ -12,7 +12,8 @@ namespace BIW_Extractor
     public static class RequestHandler
     {
     
-        public static string HttpRequest(string url, NetworkCredential auth , string requestMethod, string logFile){
+        public static string HttpRequest(string url, NetworkCredential auth, string requestMethod, string logFile)
+        {
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.CreateHttp(url);
             request.Method = requestMethod;
@@ -27,8 +28,8 @@ namespace BIW_Extractor
                 {
                     response = sr.ReadToEnd();
                 }
-            } 
-            catch(WebException e)
+            }
+            catch (WebException e)
             {
                 Logging.LogOperation("Request", url, "failed" + e.Message, logFile);
                 Console.WriteLine($"Request: {url} failed {e.Message}");
@@ -39,21 +40,34 @@ namespace BIW_Extractor
             return response;
         }
 
-        public static void DownloadDocuments(string path, List<Document> fileList, NetworkCredential auth, string logFile)
+        public static void DownloadDocuments(string path, List<Document> fileList, NetworkCredential auth, string logFile, string docName)
         {
-                using (WebClient client = new WebClient())
+            Config conf = new Config();
+            conf.ReadConfigFile();
+
+
+            string MetaDataHeader = conf.ConfigList.GetValueOrDefault("MetaDataHeader");
+            string DocumentListCsv = conf.ConfigList.GetValueOrDefault("DocumentListCsv");
+
+
+            using (WebClient client = new WebClient())
+            {
+                client.Credentials = auth;
+
+                foreach (var item in fileList)
                 {
-                    client.Credentials = auth;
-                    
-                    foreach (var item in fileList)
+                    foreach (var document in item.Documents)
                     {
-                        if (!File.Exists(path + item.Documents.FileName + "." + item.Documents.FileType))
+                        if (!File.Exists($@"{path}{document.FileName}.{document.FileType}"))
                         {
-                            client.DownloadFile(item.Documents.DownloadLink, path + item.Documents.FileName + "." + item.Documents.FileType);
-                            Logging.LogOperation("DocumentDownload", item.Documents.DownloadLink, "successful", logFile);
+                            client.DownloadFile(document.DownloadLink, $@"{path}{document.DownloadLink.Substring(document.DownloadLink.IndexOf('=')+1)}.{document.FileType}");
+
+                            Logging.LogOperation("DocumentDownload", document.DownloadLink, "successful", logFile);
+                            FileOperations.WriteDocumentMetaDataCsv(DocumentListCsv, item, document, MetaDataHeader, docName ,document.DownloadLink.Substring(document.DownloadLink.IndexOf('=')+1));
                         }
                     }
                 }
+            }
         }
 
         public static NetworkCredential CreateCredentials(string user, string pass)
@@ -68,18 +82,19 @@ namespace BIW_Extractor
 
             List<Document> docList = new List<Document>();
 
-            DocumentFiles documentFiles;
+            List<DocumentFiles> documentFiles = new List<DocumentFiles>();
 
             foreach (var item in y)
             {
                 JArray DocFiles = (JArray)item["DocumentFiles"];
 
                 Document doc = JsonConvert.DeserializeObject<Document>(item.ToString());
+                doc.Documents = new List<DocumentFiles>();
 
                 foreach (var docs in DocFiles)
                 {
-                    documentFiles = JsonConvert.DeserializeObject<DocumentFiles>(docs.ToString());
-                    doc.Documents = documentFiles;
+                    //DocumentFiles tempDocFile = JsonConvert.DeserializeObject<DocumentFiles>(docs.ToString());
+                    doc.Documents.Add(JsonConvert.DeserializeObject<DocumentFiles>(docs.ToString()));
                 }
 
                 docList.Add(doc);
@@ -109,7 +124,6 @@ namespace BIW_Extractor
 
             return register;
         }
-
 
         public static List<Project> ParseProjectRequest(string jsonResponse)
         {

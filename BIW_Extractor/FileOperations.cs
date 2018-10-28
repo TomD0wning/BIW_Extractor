@@ -15,22 +15,6 @@ namespace BIW_Extractor
     public static class FileOperations
     {
 
-
-        public static Dictionary<string, string> ReadConfig()
-        {
-            Dictionary<string, string> configList = new Dictionary<string, string>();
-
-            using(StreamReader sr = new StreamReader("config.json")){
-                JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(sr));
-
-                foreach (var item in o)
-                {
-                    configList.Add(item.Key, item.Value.ToString());
-                }
-            }
-            return configList;
-        }
-
         /// <summary>
         /// Create the folder if it does not exist
         /// </summary>
@@ -51,22 +35,24 @@ namespace BIW_Extractor
         {
             foreach (var item in listOfFolders)
             {
-                if (!Directory.Exists(path + "/" + item))
+                if (!Directory.Exists($@"{path}/{item}"))
                 {
-                    Directory.CreateDirectory(path);
+                    Directory.CreateDirectory($@"{path}{item}");
                 }
             }
         }
 
         public static void CreateFolderStructure(string path, List<DocumentRegister> documentRegisters)
         {
+            string pathToCreate = string.Empty;
 
             foreach (var item in documentRegisters)
             {
-                if (!Directory.Exists(path + "/" + item.Name))
+                pathToCreate = $@"{path}/{item.Name}";
+                if (!Directory.Exists(pathToCreate))
                 {
-                    Directory.CreateDirectory(path + "/" + item.Id);
-                    SetFullFolderPermissionsUnix(path + "/" + item.Id);
+                    Directory.CreateDirectory(pathToCreate);
+                    SetFullFolderPermissionsUnix(pathToCreate);
                 }
             }
         }
@@ -105,6 +91,21 @@ namespace BIW_Extractor
             {
                 csv.AppendLine($"{item.ToString()},{altMetaData}");
             }
+
+            File.AppendAllText(outputFile, csv.ToString());
+        }
+
+        public static void WriteDocumentMetaDataCsv(string outputFile, Document document, DocumentFiles documentFile, string header, string friendlyName, string fileID)
+        {
+            var csv = new StringBuilder();
+            if (!File.Exists(outputFile))
+            {
+              csv.AppendLine(header);
+            }
+                    csv.AppendLine($"{document.IdDocument},{document.IdDocumentSubmission},{fileID},{document.IdDocumentRegister},{friendlyName.Replace(',', ' ').Trim()},{document.IdProject}," +
+                   $"{document.ProjectName.Replace(',', ' ').Trim()},{document.ReceivedDate},{document.Description},{document.IdCompany}," +
+                   $"{document.CompanyName.Replace(',', ' ').Trim()},{document.IssuedDate},{document.DocumentStatus},{document.Working}," +
+                   $"{document.IssueNumber},{document.RevisionLetter},{document.PurposeOfIssue},{documentFile.ToString()}");
 
             File.AppendAllText(outputFile, csv.ToString());
         }

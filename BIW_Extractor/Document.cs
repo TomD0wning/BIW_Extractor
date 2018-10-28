@@ -38,19 +38,20 @@ namespace BIW_Extractor
         public string ReceivedDate;
         public string Description;
         public int IdCompany;
+        public string CompanyName;
         public string IssuedDate;
         public string DocumentStatus;
         public bool Working;
         public int IssueNumber;
         public string RevisionLetter;
         public string PurposeOfIssue;
-        public DocumentFiles Documents;
+        public List<DocumentFiles> Documents;
 
 
         public override string ToString()
         {
             return $"{this.IdDocument},{this.IdDocumentSubmission},{this.IdDocumentRegister},{this.IdProject},{this.ProjectName.Replace(',',' ').Trim()},{this.ReceivedDate}," +
-                $"{this.Description},{this.IdCompany},{this.IssuedDate},{this.DocumentStatus},{this.Working},{this.IssueNumber},{this.RevisionLetter},{this.PurposeOfIssue},{Documents.ToString()}";
+                $"{this.Description},{this.IdCompany},{this.CompanyName.Replace(',',' ').Trim()},{this.IssuedDate},{this.DocumentStatus},{this.Working},{this.IssueNumber},{this.RevisionLetter},{this.PurposeOfIssue}";
         }   
     }
 

@@ -17,7 +17,14 @@ namespace BIW_Extractor
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"{operation}({DateTime.Now}): {url} -- {status}");
-            File.AppendAllText(logFile, sb.ToString());
+            try
+            {
+                File.AppendAllText(logFile, sb.ToString());
+            }
+            catch(Exception e)
+            {
+            Console.WriteLine(e.Message);
+            }
         }
     }
 }
