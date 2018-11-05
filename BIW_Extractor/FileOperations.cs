@@ -65,6 +65,20 @@ namespace BIW_Extractor
             };
         }
 
+        public static List<string> ReadFile(string file)
+        {
+            string[] fileContents;
+
+            List<string> lst = new List<string>();
+
+            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
+            {
+                fileContents = sr.ReadToEnd().Split('\n');
+            }
+
+            return fileContents.ToList();
+        }
+
         public static void CreateProjectFolder(string filePath)
         {
             if (!Directory.Exists(filePath))
@@ -99,8 +113,6 @@ namespace BIW_Extractor
 
 
             var line = new StringBuilder();
-            if (!File.Exists(outputFile))
-                line.AppendLine(header);
 
             line.AppendLine(obj.ToString());
 

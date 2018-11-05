@@ -20,8 +20,6 @@ namespace BIW_Extractor
         public bool active;
 
 
-
-
         public override string ToString()
         {
             return $"{this.id},{this.name.Replace(',',' ').Trim()},{this.code},{this.displayName.Replace(',',' ').Trim()},{this.active}";

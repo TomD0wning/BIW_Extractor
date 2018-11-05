@@ -49,7 +49,6 @@ namespace BIW_Extractor
             string MetaDataHeader = conf.ConfigList.GetValueOrDefault("MetaDataHeader");
             string DocumentListCsv = conf.ConfigList.GetValueOrDefault("DocumentListCsv");
 
-
             using (WebClient client = new WebClient())
             {
                 client.Credentials = auth;
