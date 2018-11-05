@@ -21,6 +21,7 @@ namespace BIW_Extractor
             string metaDataFileLocation = conf.ConfigList.GetValueOrDefault("DocumentListCsv");
             string metaDataHeader = conf.ConfigList.GetValueOrDefault("MetaDataHeader");
             string logFileLocation = conf.ConfigList.GetValueOrDefault("LogFileLocation");
+            string ProjectCheckList = conf.ConfigList.GetValueOrDefault("ProjectCheckList");
 
             //Create log file and start logging
             Logging.CreateLogFile(conf.ConfigList.GetValueOrDefault("LogFileLocation"));
@@ -29,7 +30,7 @@ namespace BIW_Extractor
             NetworkCredential auth = RequestHandler.CreateCredentials(conf.ConfigList.GetValueOrDefault("User"), conf.ConfigList.GetValueOrDefault("Pwd"));
 
             //get project list
-            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=1", auth, "GET", logFileLocation));
+            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=500", auth, "GET", logFileLocation));
             //var projectList = FileOperations.ReadProjectFile("../BIWProjectRequestResponse.json");
 
             //write project list to disk
@@ -62,6 +63,9 @@ namespace BIW_Extractor
                             Logging.LogOperation("DocumentDownload", doc.ToString(), "Unsuccessful: " + e.Message, logFileLocation);
                         }
                 }
+
+                FileOperations.OutputObj(ProjectCheckList, project, "ProjectID");
+                   
             }
             System.Console.WriteLine("fin");
         }

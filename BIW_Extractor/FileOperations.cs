@@ -95,6 +95,18 @@ namespace BIW_Extractor
             File.AppendAllText(outputFile, csv.ToString());
         }
 
+        public static void OutputObj(string outputFile, object obj,string header){
+
+
+            var line = new StringBuilder();
+            if (!File.Exists(outputFile))
+                line.AppendLine(header);
+
+            line.AppendLine(obj.ToString());
+
+            File.AppendAllText(outputFile, line.ToString());
+        }
+
         public static void WriteDocumentMetaDataCsv(string outputFile, Document document, DocumentFiles documentFile, string header, string friendlyName, string fileID)
         {
             var csv = new StringBuilder();
@@ -103,7 +115,7 @@ namespace BIW_Extractor
               csv.AppendLine(header);
             }
                     csv.AppendLine($"{document.IdDocument},{document.IdDocumentSubmission},{fileID},{document.IdDocumentRegister},{friendlyName.Replace(',', ' ').Trim()},{document.IdProject}," +
-                   $"{document.ProjectName.Replace(',', ' ').Trim()},{document.ReceivedDate},{document.Description},{document.IdCompany}," +
+                   $"{document.ProjectName.Replace(',', ' ').Trim()},{document.ReceivedDate},{document.Description.Replace(',',' ').Trim()},{document.IdCompany}," +
                    $"{document.CompanyName.Replace(',', ' ').Trim()},{document.IssuedDate},{document.DocumentStatus},{document.Working}," +
                    $"{document.IssueNumber},{document.RevisionLetter},{document.PurposeOfIssue},{documentFile.ToString()}");
 

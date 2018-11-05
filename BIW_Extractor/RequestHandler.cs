@@ -58,7 +58,7 @@ namespace BIW_Extractor
                 {
                     foreach (var document in item.Documents)
                     {
-                        if (!File.Exists($@"{path}{document.FileName}.{document.FileType}"))
+                        if (!File.Exists($@"{path}{document.DownloadLink.Substring(document.DownloadLink.IndexOf('=') + 1)}.{document.FileType}"))
                         {
                             client.DownloadFile(document.DownloadLink, $@"{path}{document.DownloadLink.Substring(document.DownloadLink.IndexOf('=')+1)}.{document.FileType}");
 

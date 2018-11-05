@@ -64,7 +64,7 @@ namespace BIW_Extractor
 
         public override string ToString()
         {
-            return $"{this.DownloadLink},{this.FileName},{this.FileSize},{this.FileType}";
+            return $"{this.DownloadLink},{this.FileName.Replace(',',' ')},{this.FileSize},{this.FileType}";
         }
     }
 

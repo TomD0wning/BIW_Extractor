@@ -9,15 +9,16 @@
   "DocumentOverview": "/{channelId}/{projectId}/{documentRegisterId}/Documents",
   "DocumentComments": "/{channelId}/{projectId}/{documentRegisterId}/DocumentComments",
   "DocumentDownload": "",
-  "ProjectDriveLocation": "/Users/tomp.downing/Documents/BIWMigration",
-  "ProjectListCsv": "/Users/tomp.downing/Documents/BIWMigration/ProjectList.csv",
-  "DocumentListCsv": "/Users/tomp.downing/Documents/BIWMigration/DocumentMetadataList.csv",
+  "ProjectDriveLocation": "/Volumes/AshurDT2 4T/BIW_Migration/Projects",
+  "ProjectListCsv": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/ProjectList.csv",
+  "DocumentListCsv": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/DocumentMetadataList.csv",
   "JsChannelId": "101",
   "ProjectHeader": "ID,Name,Code,Display Name,Active",
   "MetaDataHeader": "IdDocument,IdDocumentSubmissions,documentFileId,IdDocumentRegister,FolderName,IdProject,ProjectName,ReceivedDate,Description,IdCompany,CompanyName,IssuedDate,DocumentStatus,Working,IssueNumber,RevisionLetter,PurposeOfIssue,DownloadLink,FileName,FileSize,FileType",
   "GetRequest": "GET",
   "PostRequest": "POST",
   "ContentType": "application/json",
-  "DriveReference": "X",
-  "LogFileLocation": "../ExtractLog.txt"
+  "DriveReference": "/Volumes/AshurDT2 4T/",
+  "LogFileLocation": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/ExtractLog.txt",
+  "ProjectCheckList": "/Volumes/AshurDT2 4T/BIW_Migration/CompletedProjects.txt"
 }
