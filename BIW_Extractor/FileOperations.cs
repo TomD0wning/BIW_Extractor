@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Net;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -109,7 +106,7 @@ namespace BIW_Extractor
             File.AppendAllText(outputFile, csv.ToString());
         }
 
-        public static void OutputObj(string outputFile, object obj,string header){
+        public static void OutputObj(string outputFile, object obj){
 
 
             var line = new StringBuilder();
