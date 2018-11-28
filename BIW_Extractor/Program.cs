@@ -29,7 +29,7 @@ namespace BIW_Extractor
             NetworkCredential auth = RequestHandler.CreateCredentials(conf.ConfigList.GetValueOrDefault("User"), conf.ConfigList.GetValueOrDefault("Pwd"));
 
             //get project list
-            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=500", auth, "GET", logFileLocation));
+            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=400", auth, "GET", logFileLocation));
             //var projectList = FileOperations.ReadProjectFile("../BIWProjectRequestResponse.json");
 
             List<string> completedProjects = null;
@@ -38,7 +38,7 @@ namespace BIW_Extractor
                 completedProjects = FileOperations.ReadFile(ProjectCheckList);
 
             //write project list to disk
-            FileOperations.WriteCsv(conf.ConfigList.GetValueOrDefault("ProjectListCsv"), projectList, conf.ConfigList.GetValueOrDefault("ProjectHeader"), "");
+  //          FileOperations.WriteCsv(conf.ConfigList.GetValueOrDefault("ProjectListCsv"), projectList, conf.ConfigList.GetValueOrDefault("ProjectHeader"), "");
 
             foreach (var project in projectList)
             {

@@ -41,7 +41,7 @@ namespace BIW_Extractor
         public string CompanyName;
         public string IssuedDate;
         public string DocumentStatus;
-        public bool Working;
+        public bool? Working;
         public int IssueNumber;
         public string RevisionLetter;
         public string PurposeOfIssue;

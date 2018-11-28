@@ -20,5 +20,5 @@
   "ContentType": "application/json",
   "DriveReference": "/Volumes/AshurDT2 4T/",
   "LogFileLocation": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/ExtractLog.txt",
-  "ProjectCheckList": "/Volumes/AshurDT2 4T/BIW_Migration/CompletedProjects.txt"
+  "ProjectCheckList": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/CompletedProjects.txt"
 }
