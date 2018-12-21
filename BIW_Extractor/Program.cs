@@ -29,46 +29,38 @@ namespace BIW_Extractor
             NetworkCredential auth = RequestHandler.CreateCredentials(conf.ConfigList.GetValueOrDefault("User"), conf.ConfigList.GetValueOrDefault("Pwd"));
 
             //get project list
-            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=400", auth, "GET", logFileLocation));
-            //var projectList = FileOperations.ReadProjectFile("../BIWProjectRequestResponse.json");
+            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=130000", auth, "GET", logFileLocation));
 
-            List<string> completedProjects = null;
+            List<string> emptyProjects = null;
 
             if(File.Exists(ProjectCheckList))
-                completedProjects = FileOperations.ReadFile(ProjectCheckList);
-
-            //write project list to disk
-  //          FileOperations.WriteCsv(conf.ConfigList.GetValueOrDefault("ProjectListCsv"), projectList, conf.ConfigList.GetValueOrDefault("ProjectHeader"), "");
+                emptyProjects = FileOperations.ReadFile(ProjectCheckList);
 
             foreach (var project in projectList)
             {
-                if (!completedProjects.Contains(project.id.ToString()))
+                if (!emptyProjects.Contains(project.id.ToString()))
                 {
                     //Take the project ID and make request for folders
                     var docRegList = RequestHandler.ParseRegisterRequest(RequestHandler.HttpRequest($"https://uk-api.myconject.com/api/101/{project.id}/DocumentRegisters", auth, "GET", logFileLocation));
-                    //create folder based on docRegList
-                    FileOperations.CreateFolderStructure($"{rootFolderLocation}/{project.id}", docRegList);
 
+                    int emptyDocRegCount = 0;
+                     
                     //get the project docs based on the docRegList
                     foreach (var doc in docRegList)
                     {
+                        //see if there is any docs within doc list and if not
                         var documentList = RequestHandler.ParseDocumentJsonResponse(RequestHandler.HttpRequest($"https://uk-api.myconject.com/api/101/{project.id}/{doc.Id}/Documents", auth, "GET", logFileLocation));
                         if (documentList.Count == 0)
                         {
-                            continue;
+                            emptyDocRegCount++;
                         }
-                        try
+                        else
                         {
-                            //Download each document from the doclist for the current DocumentRegister
-                            RequestHandler.DownloadDocuments($"{rootFolderLocation}/{project.id}/{doc.Name}/", documentList, auth, logFileLocation, doc.Name);
-                        }
-                        catch (Exception e)
-                        {
-                            System.Console.WriteLine(e);
-                            Logging.LogOperation("DocumentDownload", doc.ToString(), "Unsuccessful: " + e.Message, logFileLocation);
+                            break;
                         }
                     }
-                    FileOperations.OutputObj(ProjectCheckList, project.id);
+                    if(emptyDocRegCount == docRegList.Count)
+                        FileOperations.OutputObj(ProjectCheckList, $"{project.id} - {project.name}");
                 }
             }
             System.Console.WriteLine("fin");

@@ -24,7 +24,7 @@ namespace BIW_Extractor
 
         public void ReadConfigFile(){   
                     
-            using (StreamReader sr = new StreamReader("config.json"))
+            using (StreamReader sr = new StreamReader("localSysConfig.json"))
             {
                 JObject o = (JObject)JToken.ReadFrom(new JsonTextReader(sr));
 
