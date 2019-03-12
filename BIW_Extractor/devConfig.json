@@ -19,6 +19,6 @@
   "PostRequest": "POST",
   "ContentType": "application/json",
   "DriveReference": "/Volumes/SuperDive HD/",
-  "LogFileLocation": "/Volume/SuperDrive/BIW_Migration/Metadata/ExtractLog.txt",
+  "LogFileLocation": "/Volume/SuperDrive HD/BIW_Migration/Metadata/ExtractLog.txt",
   "ProjectCheckList": "/Volumes/SuperDrive HD/BIW_Migration/CompletedProjects.txt"
 }
