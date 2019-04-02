@@ -30,7 +30,7 @@ namespace BIW_Extractor
 
             //get project list
             var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=100000", auth, "GET", logFileLocation));
-            //var projectList = FileOperations.ReadProjectFile("../BIWProjectRequestResponse.json");
+            //var projectList = FileOperations.ReadProjectsFromCSV("/Volumes/Kracken/BIW_Migration/UpdatedProjects.txt");
 
             List<string> completedProjects = null;
 
@@ -38,7 +38,7 @@ namespace BIW_Extractor
                 completedProjects = FileOperations.ReadFile(ProjectCheckList);
 
             //write project list to disk
-  //          FileOperations.WriteCsv(conf.ConfigList.GetValueOrDefault("ProjectListCsv"), projectList, conf.ConfigList.GetValueOrDefault("ProjectHeader"), "");
+            //FileOperations.WriteCsv(conf.ConfigList.GetValueOrDefault("ProjectListCsv"), projectList, conf.ConfigList.GetValueOrDefault("ProjectHeader"), "");
 
             foreach (var project in projectList)
             {

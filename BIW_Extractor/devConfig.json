@@ -9,16 +9,16 @@
   "DocumentOverview": "/{channelId}/{projectId}/{documentRegisterId}/Documents",
   "DocumentComments": "/{channelId}/{projectId}/{documentRegisterId}/DocumentComments",
   "DocumentDownload": "",
-  "ProjectDriveLocation": "/Volumes/SuperDrive HD/BIW_Migration/Projects",
-  "ProjectListCsv": "/Volumes/SuperDrive HD/BIW_Migration/Metadata/ProjectList.csv",
-  "DocumentListCsv": "/Volumes/SuperDrive HD/BIW_Migration/Metadata/DocumentMetadataList.csv",
+  "ProjectDriveLocation": "/Volumes/Kracken/BIW_Migration/Projects",
+  "ProjectListCsv": "/Volumes/Kracken/BIW_Migration/Metadata/ProjectList.csv",
+  "DocumentListCsv": "/Volumes/Kracken/BIW_Migration/Metadata/DocumentMetadataList.csv",
   "JsChannelId": "101",
   "ProjectHeader": "ID,Name,Code,Display Name,Active",
   "MetaDataHeader": "IdDocument,IdDocumentSubmissions,documentFileId,IdDocumentRegister,FolderName,IdProject,ProjectName,ReceivedDate,Description,IdCompany,CompanyName,IssuedDate,DocumentStatus,Working,IssueNumber,RevisionLetter,PurposeOfIssue,DownloadLink,FileName,FileSize,FileType",
   "GetRequest": "GET",
   "PostRequest": "POST",
   "ContentType": "application/json",
-  "DriveReference": "/Volumes/SuperDive HD/",
-  "LogFileLocation": "/Volume/SuperDrive HD/BIW_Migration/Metadata/ExtractLog.txt",
-  "ProjectCheckList": "/Volumes/SuperDrive HD/BIW_Migration/CompletedProjects.txt"
+  "DriveReference": "/Volumes/Kracken/",
+  "LogFileLocation": "/Volumes/Kracken/BIW_Migration/Metadata/ExtractLog.txt",
+  "ProjectCheckList": "/Volumes/Kracken/BIW_Migration/Metadata/CompletedProjects.txt"
 }
