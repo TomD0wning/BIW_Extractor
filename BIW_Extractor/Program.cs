@@ -22,24 +22,33 @@ namespace BIW_Extractor
             string logFileLocation = conf.ConfigList.GetValueOrDefault("LogFileLocation");
             string ProjectCheckList = conf.ConfigList.GetValueOrDefault("ProjectCheckList");
 
-            //Create log file and start logging
+            //Create log file and start logging, based on the current config context
             Logging.CreateLogFile(conf.ConfigList.GetValueOrDefault("LogFileLocation"));
 
             //setup network credentials
             NetworkCredential auth = RequestHandler.CreateCredentials(conf.ConfigList.GetValueOrDefault("User"), conf.ConfigList.GetValueOrDefault("Pwd"));
 
-            //get project list
-            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=400", auth, "GET", logFileLocation));
-            //var projectList = FileOperations.ReadProjectFile("../BIWProjectRequestResponse.json");
+            //get project list from making a HTTP call to the BIW API for all project. $Top=100000 is used to get very project.
+            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=100000", auth, "GET", logFileLocation));
+
+            //Uncomment the below & change the configuration file path to read from a file for the project to download.
+            //var projectList = FileOperations.ReadProjectsFromCSV("/Volumes/Kracken/BIW_Migration/UpdatedProjects.txt");
 
             List<string> completedProjects = null;
 
+            //Obtain a list of already completed project in order to avoid redownloading. Useful for failover and dealing with the flaky BIW API
             if(File.Exists(ProjectCheckList))
                 completedProjects = FileOperations.ReadFile(ProjectCheckList);
 
-            //write project list to disk
-  //          FileOperations.WriteCsv(conf.ConfigList.GetValueOrDefault("ProjectListCsv"), projectList, conf.ConfigList.GetValueOrDefault("ProjectHeader"), "");
+            //write project list to disk, un comment to write the full list of projects to a CSV. Only required in the first instance of running.
+            //FileOperations.WriteCsv(conf.ConfigList.GetValueOrDefault("ProjectListCsv"), projectList, conf.ConfigList.GetValueOrDefault("ProjectHeader"), "");
 
+
+            /*
+             *The below foreahc loop is the main part of the extraction, due to the API constraints and nesting of projects, actions need to be taken sequentally
+             *first by getting the Document Register, which responds with the list of created folders within the project, then make a call based on the project & the DocumentRegister
+             *to ascertain if there are any documents to download, then download the projects and log to metadata & save to the file system.
+             */
             foreach (var project in projectList)
             {
                 if (!completedProjects.Contains(project.id.ToString()))

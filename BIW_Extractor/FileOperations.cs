@@ -140,7 +140,7 @@ namespace BIW_Extractor
         //  "Active": true
         //},
 
-        public static List<Project> ReadProjectFile(string file)
+        public static List<Project> ReadProjectFromJsonFile(string file)
         {
             string fileContents;
 
@@ -161,6 +161,34 @@ namespace BIW_Extractor
             }
 
             return projectList;
+        }
+
+        public static List<Project> ReadProjectsFromCSV(string file)
+        {
+            string[] fileContents;
+
+            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
+            {
+                fileContents = sr.ReadToEnd().Split('\n');
+            }
+
+
+            List<Project> outputList = new List<Project>();
+
+
+            foreach (var item in fileContents)
+            {
+                outputList.Add(new Project
+                {
+                    active = true,
+                    displayName = "",
+                    code = "",
+                    id = int.Parse(item),
+                    name = "",
+                });
+            }
+
+            return outputList;
         }
     }
 }
