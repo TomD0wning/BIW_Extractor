@@ -1,6 +1,6 @@
 ﻿{
   "User": "DBIWMigration",
-  "Pwd": "X0YF2430XON01",
+    "Pwd": "Reset141019!",
   "ApiUrl": "https://uk-api.myconject.com/api/",
   "TenentQuery": "https://uk-api.myconject.com/api/tenant",
   "ProjectQuery": "https://uk-api.myconject.com/api/101/Project/?$top=100000",
@@ -9,9 +9,9 @@
   "DocumentOverview": "/{channelId}/{projectId}/{documentRegisterId}/Documents",
   "DocumentComments": "/{channelId}/{projectId}/{documentRegisterId}/DocumentComments",
   "DocumentDownload": "",
-  "ProjectDriveLocation": "/Volumes/Kracken/BIW_Migration/Projects",
-  "ProjectListCsv": "/Volumes/Kracken/BIW_Migration/Metadata/ProjectList.csv",
-  "DocumentListCsv": "/Volumes/Kracken/BIW_Migration/Metadata/DocumentMetadataList.csv",
+    "ProjectDriveLocation": "/Users/Tom/Downloads/BIW/x/Projects",
+    "ProjectListCsv": "/Users/Tom/Downloads/BIW/x/Metadata/ProjectList.csv",
+    "DocumentListCsv": "/Users/Tom/Downloads/BIW/x/Metadata/DocumentMetadataList.csv",
   "JsChannelId": "101",
   "ProjectHeader": "ID,Name,Code,Display Name,Active",
   "MetaDataHeader": "IdDocument,IdDocumentSubmissions,documentFileId,IdDocumentRegister,FolderName,IdProject,ProjectName,ReceivedDate,Description,IdCompany,CompanyName,IssuedDate,DocumentStatus,Working,IssueNumber,RevisionLetter,PurposeOfIssue,DownloadLink,FileName,FileSize,FileType",
@@ -19,6 +19,8 @@
   "PostRequest": "POST",
   "ContentType": "application/json",
   "DriveReference": "/Volumes/Kracken/",
-  "LogFileLocation": "/Volumes/Kracken/BIW_Migration/Metadata/ExtractLog.txt",
-  "ProjectCheckList": "/Volumes/Kracken/BIW_Migration/Metadata/CompletedProjects.txt"
+    "LogFileLocation": "/Users/Tom/Downloads/BIW/x/ExtractLog.txt",
+    "ProjectCheckList": "/Users/Tom/Downloads/BIW/CompletedProjects.txt",
+    "ProjectList": "/Users/Tom/Downloads/BIW/ProjectList.txt",
+    "FilesToDownload": "/Users/Tom/Downloads/BIW/ProjectsToDownload.txt"
 }

@@ -190,5 +190,23 @@ namespace BIW_Extractor
 
             return outputList;
         }
+
+        public static List<int> ReadSubmissionIds(string file)
+        {
+            string[] fileContents;
+
+            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
+            {
+                fileContents = sr.ReadToEnd().Split('\n');
+            }
+
+            List<int> output = new List<int>();
+
+            foreach (var item in fileContents)
+            {
+                output.Add(int.Parse(item));
+            }
+            return output;
+        }
     }
 }

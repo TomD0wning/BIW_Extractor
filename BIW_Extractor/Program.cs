@@ -21,6 +21,8 @@ namespace BIW_Extractor
             string metaDataHeader = conf.ConfigList.GetValueOrDefault("MetaDataHeader");
             string logFileLocation = conf.ConfigList.GetValueOrDefault("LogFileLocation");
             string ProjectCheckList = conf.ConfigList.GetValueOrDefault("ProjectCheckList");
+            string ProjectList = conf.ConfigList.GetValueOrDefault("ProjectList");
+            string FilesToDownLoad = conf.ConfigList.GetValueOrDefault("FilesToDownload");
 
             //Create log file and start logging, based on the current config context
             Logging.CreateLogFile(conf.ConfigList.GetValueOrDefault("LogFileLocation"));
@@ -28,13 +30,16 @@ namespace BIW_Extractor
             //setup network credentials
             NetworkCredential auth = RequestHandler.CreateCredentials(conf.ConfigList.GetValueOrDefault("User"), conf.ConfigList.GetValueOrDefault("Pwd"));
 
-            //get project list from making a HTTP call to the BIW API for all project. $Top=100000 is used to get very project.
-            var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=100000", auth, "GET", logFileLocation));
+            //get project list from making a HTTP call to the BIW API for all project. $Top=100000 is used to get every project.
+            //var projectList = RequestHandler.ParseProjectRequest(RequestHandler.HttpRequest("https://uk-api.myconject.com/api/101/Project/?$top=100000", auth, "GET", logFileLocation));
 
             //Uncomment the below & change the configuration file path to read from a file for the project to download.
-            //var projectList = FileOperations.ReadProjectsFromCSV("/Volumes/Kracken/BIW_Migration/UpdatedProjects.txt");
+            var projectList = FileOperations.ReadProjectsFromCSV(ProjectList);
 
             List<string> completedProjects = null;
+
+            //Get the list of known missing file submission ids
+            List<int> DocsToDownload = FileOperations.ReadSubmissionIds(FilesToDownLoad);
 
             //Obtain a list of already completed project in order to avoid redownloading. Useful for failover and dealing with the flaky BIW API
             if(File.Exists(ProjectCheckList))
@@ -45,7 +50,7 @@ namespace BIW_Extractor
 
 
             /*
-             *The below foreahc loop is the main part of the extraction, due to the API constraints and nesting of projects, actions need to be taken sequentally
+             *The below foreach loop is the main part of the extraction, due to the API constraints and nesting of projects, actions need to be taken sequentally
              *first by getting the Document Register, which responds with the list of created folders within the project, then make a call based on the project & the DocumentRegister
              *to ascertain if there are any documents to download, then download the projects and log to metadata & save to the file system.
              */
@@ -61,7 +66,7 @@ namespace BIW_Extractor
                     //get the project docs based on the docRegList
                     foreach (var doc in docRegList)
                     {
-                        var documentList = RequestHandler.ParseDocumentJsonResponse(RequestHandler.HttpRequest($"https://uk-api.myconject.com/api/101/{project.id}/{doc.Id}/Documents", auth, "GET", logFileLocation));
+                        var documentList = RequestHandler.ParseDocumentJsonResponse(RequestHandler.HttpRequest($"https://uk-api.myconject.com/api/101/{project.id}/Documents?documentRegisterId={doc.Id}", auth, "GET", logFileLocation));
                         if (documentList.Count == 0)
                         {
                             continue;
@@ -69,7 +74,7 @@ namespace BIW_Extractor
                         try
                         {
                             //Download each document from the doclist for the current DocumentRegister
-                            RequestHandler.DownloadDocuments($"{rootFolderLocation}/{project.id}/{doc.Name}/", documentList, auth, logFileLocation, doc.Name);
+                            RequestHandler.DownloadDocuments($"{rootFolderLocation}/{project.id}/{doc.Name}/", documentList, auth, logFileLocation, doc.Name, DocsToDownload);
                         }
                         catch (Exception e)
                         {

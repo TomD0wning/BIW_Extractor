@@ -12,4 +12,9 @@
   <ItemGroup>
     <Compile Remove="HelperFunctions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="devConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

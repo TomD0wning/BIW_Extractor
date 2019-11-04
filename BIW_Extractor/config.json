@@ -1,6 +1,6 @@
 ﻿{
   "User": "DBIWMigration",
-  "Pwd": "X0YF2430XON01",
+    "Pwd": "Reset141019!",
   "ApiUrl": "https://uk-api.myconject.com/api/",
   "TenentQuery": "https://uk-api.myconject.com/api/tenant",
   "ProjectQuery": "https://uk-api.myconject.com/api/101/Project/?$top=100000",
@@ -20,5 +20,6 @@
   "ContentType": "application/json",
   "DriveReference": "/Volumes/AshurDT2 4T/",
   "LogFileLocation": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/ExtractLog.txt",
-  "ProjectCheckList": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/CompletedProjects.txt"
+  "ProjectCheckList": "/Volumes/AshurDT2 4T/BIW_Migration/Metadata/CompletedProjects.txt",
+    "ProjectList": "/Volumes/AshurDT2 4T/BIW_Migration/ProjectToDoList.txt"
 }

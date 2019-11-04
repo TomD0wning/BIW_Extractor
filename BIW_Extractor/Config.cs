@@ -14,14 +14,6 @@ namespace BIW_Extractor
 
         public Dictionary<string, string> ConfigList { get; set; }
 
-
-        /*
-         *Prod Config: config.json 
-         *Dev Config: devConfig.json
-         *Local Config: localSysConfig.json
-         */
-
-
         public void ReadConfigFile(){   
                     
             using (StreamReader sr = new StreamReader("devConfig.json"))

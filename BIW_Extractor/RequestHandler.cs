@@ -40,11 +40,10 @@ namespace BIW_Extractor
             return response;
         }
 
-        public static void DownloadDocuments(string path, List<Document> fileList, NetworkCredential auth, string logFile, string docName)
+        public static void DownloadDocuments(string path, List<Document> fileList, NetworkCredential auth, string logFile, string docName, List<int> toDownload)
         {
             Config conf = new Config();
             conf.ReadConfigFile();
-
 
             string MetaDataHeader = conf.ConfigList.GetValueOrDefault("MetaDataHeader");
             string DocumentListCsv = conf.ConfigList.GetValueOrDefault("DocumentListCsv");
@@ -55,15 +54,24 @@ namespace BIW_Extractor
 
                 foreach (var item in fileList)
                 {
-                    foreach (var document in item.Documents)
-                    {
-                        if (!File.Exists($@"{path}{document.DownloadLink.Substring(document.DownloadLink.IndexOf('=') + 1)}.{document.FileType}"))
+                    if (toDownload.Contains(item.IdDocumentSubmission)) {   
+                        foreach (var document in item.Documents)
                         {
-                            client.DownloadFile(document.DownloadLink, $@"{path}{document.DownloadLink.Substring(document.DownloadLink.IndexOf('=')+1)}.{document.FileType}");
-
-                            Logging.LogOperation("DocumentDownload", document.DownloadLink, "successful", logFile);
-                            FileOperations.WriteDocumentMetaDataCsv(DocumentListCsv, item, document, MetaDataHeader, docName ,document.DownloadLink.Substring(document.DownloadLink.IndexOf('=')+1));
+                            if (!File.Exists($@"{path}{document.DownloadLink.Substring(document.DownloadLink.IndexOf('=') + 1)}.{document.FileType}")   )
+                            {
+                                //string downloadLink = "https://uk-api.myconject.com/api/101/46/documentDownload/3551/3551";
+                                // $@"{path}{document.DownloadLink.Substring(document.DownloadLink.IndexOf('=') + 1)}.{document.FileType}");
+                                string downloadLink = $"https://uk-api.myconject.com/api/101/{item.IdProject}/documentDownload/{item.IdDocument}/{item.IdDocumentSubmission}";
+                                client.DownloadFile($"https://uk-api.myconject.com/api/101/{item.IdProject}/documentDownload/{item.IdDocumentSubmission}/{item.IdDocumentSubmission}", $@"{path}{item.IdDocument}.{document.FileType}");
+                                //client.DownloadFile(downloadLink, $@"{path}{item.IdDocument}.{document.FileType}");
+                                Logging.LogOperation("DocumentDownload", document.DownloadLink, "successful", logFile);
+                                FileOperations.WriteDocumentMetaDataCsv(DocumentListCsv, item, document, MetaDataHeader, docName, item.IdDocument.ToString());
+                            }
                         }
+                    }
+                    else
+                    {
+                        continue;
                     }
                 }
             }
@@ -76,27 +84,34 @@ namespace BIW_Extractor
 
         public static List<Document> ParseDocumentJsonResponse(string jsonResponse)
         {
-
-            JArray y = JArray.Parse(jsonResponse);
-
             List<Document> docList = new List<Document>();
 
             List<DocumentFiles> documentFiles = new List<DocumentFiles>();
 
-            foreach (var item in y)
+            try
             {
-                JArray DocFiles = (JArray)item["DocumentFiles"];
+                JArray y = JArray.Parse(jsonResponse);
 
-                Document doc = JsonConvert.DeserializeObject<Document>(item.ToString());
-                doc.Documents = new List<DocumentFiles>();
 
-                foreach (var docs in DocFiles)
+                foreach (var item in y)
                 {
-                    //DocumentFiles tempDocFile = JsonConvert.DeserializeObject<DocumentFiles>(docs.ToString());
-                    doc.Documents.Add(JsonConvert.DeserializeObject<DocumentFiles>(docs.ToString()));
-                }
+                    JArray DocFiles = (JArray)item["DocumentFiles"];
 
-                docList.Add(doc);
+                    Document doc = JsonConvert.DeserializeObject<Document>(item.ToString());
+                    doc.Documents = new List<DocumentFiles>();
+
+                    foreach (var docs in DocFiles)
+                    {
+                        //DocumentFiles tempDocFile = JsonConvert.DeserializeObject<DocumentFiles>(docs.ToString());
+                        doc.Documents.Add(JsonConvert.DeserializeObject<DocumentFiles>(docs.ToString()));
+                    }
+
+                    docList.Add(doc);
+                }
+            } catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return new List<Document>();
             }
 
             return docList;
